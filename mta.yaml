@@ -1,0 +1,26 @@
+_schema-version: '3.1'
+ID: mycloudsdkdemo01
+version: 1.0.0-SNAPSHOT
+modules:
+  - name: mycloudsdkdemo01
+    type: java
+    path: mycloudsdkdemo01/
+    parameters:
+      memory: 4096M
+      disk-quota: 1024M
+      buildpack: sap_java_buildpack
+    provides:
+      - name: mycloudsdkdemo01-api
+        properties:
+          mycloudsdkdemo01-api-url: ${default-url}
+    build-parameters:
+      builder: maven
+      build-result: application/target/mycloudsdkdemo01-application.jar  # 빌드 결과 파일 지정
+      properties:                # Maven 빌드 속성 설정
+        maven.compiler.source: 17
+        maven.compiler.target: 17
+    properties:
+      SESSION_TIMEOUT : 30
+      SPRING_PROFILES_ACTIVE: cloud
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jre.SAPMachineJRE']"
+      JBP_CONFIG_SAP_MACHINE_JRE: '{ version: 17.+ }'
