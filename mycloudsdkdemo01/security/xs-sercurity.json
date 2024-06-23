@@ -1,0 +1,20 @@
+{
+    "xsappname": "mycloudsdkdemo01-auth",
+    "tenant-mode": "dedicated",
+    "scopes": [
+      {
+        "name": "$XSAPPNAME.Display",
+        "description": "display"
+      }
+    ],
+    "role-templates": [
+      {
+        "name": "Viewer",
+        "description": "Required to view things in your solution",
+        "scope-references"     : [
+          "$XSAPPNAME.Display"
+        ]
+      }
+    ]
+  }
+  

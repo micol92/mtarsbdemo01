@@ -5,6 +5,9 @@ modules:
   - name: mycloudsdkdemo01
     type: java
     path: mycloudsdkdemo01/
+    requires:
+      - name: mycloudsdkdemo01-auth
+      - name: mycloudsdkdemo01-dest
     parameters:
       memory: 4096M
       disk-quota: 1024M
@@ -24,3 +27,43 @@ modules:
       SPRING_PROFILES_ACTIVE: cloud
       JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jre.SAPMachineJRE']"
       JBP_CONFIG_SAP_MACHINE_JRE: '{ version: 17.+ }'
+
+  - name: mycloudsdkdemo01-approuter
+    type: nodejs
+    path: mycloudsdkdemo01/security/approuter
+    parameters:
+      keep-existing-routes: true
+      memory: 1024M
+      disk-quota: 1024M
+    requires:
+      - name: mycloudsdkdemo01-auth
+      - name: mycloudsdkdemo01-dest
+      - name: mycloudsdkdemo01-api
+        group: destinations
+        properties:
+          name: app-destination
+          url: '~{mycloudsdkdemo01-api-url}'
+          forwardAuthToken: true
+    provides:
+      - name: approuter-url
+        properties:
+          url: '${default-url}'
+    properties:
+      SESSION_TIMEOUT : 30
+
+resources:
+  - name: mycloudsdkdemo01-dest
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: destination
+      service-plan: lite
+  - name: mycloudsdkdemo01-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./mycloudsdkdemo01/security/xs-sercurity.json
+      config:
+        xsappname: mycloudsdkdemo01-auth
+        tenant-mode: dedicated
+

@@ -1,6 +1,20 @@
 ---
 applications:
 
+- name: mycloudsdkdemo01-approuter
+  routes:
+    - route: approuter-mycloudsdkdemo01.cfapps.ap12.hana.ondemand.com
+  path: security/approuter
+  memory: 128M
+  buildpacks:
+    - nodejs_buildpack
+  env:
+#    TENANT_HOST_PATTERN: 'approuter-(.*).cfapps.ap12.hana.ondemand.com'
+    destinations: '[{"name":"app-destination", "url" :"https://mycloudsdkdemo01-terrific-gecko-gw.cfapps.ap12.hana.ondemand.com", "forwardAuthToken": true}]'
+    SESSION_TIMEOUT : 30  
+  services:
+   - mycloudsdkdemo01-auth
+
 - name: mycloudsdkdemo01
   memory: 1500M
   timeout: 300
@@ -14,7 +28,9 @@ applications:
     JBP_CONFIG_SAPJVM_MEMORY_SIZES: 'metaspace:128m..'
     JBP_CONFIG_COMPONENTS: 'jres: [''com.sap.xs.java.buildpack.jre.SAPMachineJRE'']'
     JBP_CONFIG_SAP_MACHINE_JRE: '{ use_offline_repository: false, version: 17.0.5 }'
-#  services:
+  services:
+   - mycloudsdkdemo01-dest
+   - mycloudsdkdemo01-auth
 #  - my-application-logs
 #  - my-xsuaa
 #  - my-destination

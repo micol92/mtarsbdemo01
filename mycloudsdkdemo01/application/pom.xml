@@ -78,7 +78,7 @@
         -->
 
         <!-- Dependencies for security setup -->
-        <!--
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -87,7 +87,6 @@
             <groupId>com.sap.cloud.security</groupId>
             <artifactId>resourceserver-security-spring-boot-starter</artifactId>
         </dependency>
-        -->
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -114,6 +113,22 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.sap.cloud.sdk.datamodel</groupId>
+            <artifactId>odata-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sap.cloud.security</groupId>
+            <artifactId>java-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Dependencies for security setup -->
         <!--
         <dependency>
@@ -201,6 +216,56 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>com.sap.cloud.sdk.datamodel</groupId>
+                <artifactId>odata-generator-maven-plugin</artifactId>
+                <version>${cloud-sdk.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-consumption</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputDirectory>${project.basedir}/src/main/resources/edmx</inputDirectory>
+                            <outputDirectory>${project.build.sourceDirectory}</outputDirectory>
+                            <packageName>com.sap.cloud.sdk.tutorial.datamodel.odata</packageName>
+                            <serviceNameMappingFile>${project.basedir}/src/main/resources/serviceNameMappings.properties</serviceNameMappingFile>
+                            <compileScope>COMPILE</compileScope>
+                            <overwriteFiles>true</overwriteFiles>
+                            <nameSource>NAME</nameSource> 
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+<!--
+          <plugin>
+                <groupId>com.sap.cloud.sdk.datamodel</groupId>
+                <artifactId>odata-generator-maven-plugin</artifactId>
+                <version>${cloud-sdk.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-consumption</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputDirectory>${project.basedir}/src/main/resources/edmx</inputDirectory>
+                            <outputDirectory>${project.build.directory}/vdm</outputDirectory>
+                            <deleteOutputDirectory>true</deleteOutputDirectory>
+                            <packageName>com.sap.cloud.sdk.tutorial.datamodel.odata</packageName>
+                            <defaultBasePath>sap/opu/odata/sap/</defaultBasePath>
+                            <compileScope>COMPILE</compileScope>
+                            <serviceMethodsPerEntitySet>true</serviceMethodsPerEntitySet>
+             
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>       
+-->            
             <!-- Plugin for generating Java classes from OData V4 metadata -->
             <!-- Have a look into our documentation for more details as well as the OData V2 generator: -->
             <!-- https://sap.github.io/cloud-sdk/docs/java/features/odata/vdm-generator -->
