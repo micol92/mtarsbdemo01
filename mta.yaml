@@ -8,6 +8,7 @@ modules:
     requires:
       - name: mycloudsdkdemo01-auth
       - name: mycloudsdkdemo01-dest
+      - name: mycloudsdkdemo01-ups
     parameters:
       memory: 4096M
       disk-quota: 1024M
@@ -66,4 +67,7 @@ resources:
       config:
         xsappname: mycloudsdkdemo01-auth
         tenant-mode: dedicated
-
+  - name: mycloudsdkdemo01-ups
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: userprovidedsvr01
